@@ -1,0 +1,43 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/breakpoints" as *;
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  margin-top: $space-6;
+
+  @include sm {
+    gap: $space-4;
+  }
+}
+
+.button {
+  padding: $space-2 $space-4;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-weight: 500;
+  color: $color-text;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: $color-bg-subtle;
+    border-color: darken($color-border, 8%);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.indicator {
+  font-weight: 500;
+  color: $color-text-muted;
+  min-width: 5rem;
+  text-align: center;
+}

@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layout/Layout.tsx";
-import HomePage from "../pages/HomePage";
-import CharactersPage from "../pages/CharactersPage";
-import CharacterDetailPage from "../pages/CharacterDetailsPage";
-import FilmsPage from "../pages/FilmsPage";
-import FilmDetailPage from "../pages/FilmDetailPage";
-import NotFoundPage from "../pages/NotFoundPage";
-import FavoritesPage from "../pages/FavoritesPage";
+import HomePage from "../pages/HomePage/HomePage.tsx";
+import CharactersPage from "../pages/CharactersPage/CharactersPage.tsx";
+import CharacterDetailPage from "../pages/CharacterDetailPage/CharacterDetailsPage.tsx";
+import FilmsPage from "../pages/FilmsPage/FilmsPage.tsx";
+import FilmDetailPage from "../pages/FilmDetailPage/FilmDetailPage.tsx";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.tsx";
+import FavoritesPage from "../pages/FavouritesPage/FavoritesPage.tsx";
 
 export default function AppRoutes() {
   return (

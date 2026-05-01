@@ -1,0 +1,34 @@
+@use "../../styles/tokens" as *;
+
+.box {
+  padding: $space-6;
+  border-radius: $radius-md;
+  text-align: center;
+  border: 1px solid $color-border;
+}
+
+.loading {
+  background: $color-bg-subtle;
+  color: $color-text-muted;
+}
+.empty {
+  background: $color-bg-subtle;
+  color: $color-text-muted;
+}
+.error {
+  background: lighten($color-danger, 38%);
+  color: darken($color-danger, 10%);
+  border-color: lighten($color-danger, 25%);
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  font-size: $font-size-base;
+}
+
+.description {
+  margin: $space-2 0 0 0;
+  font-size: $font-size-sm;
+  opacity: 0.85;
+}
