@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Character, Film, SwapiListResponse } from "../types/swapi";
 
-const SWAPI_BASE_URL = "https://swapi.dev/api/";
+const SWAPI_BASE_URL = "https://swapi.py4e.com/api/";
 
 export const swapiApi = createApi({
   reducerPath: "swapiApi",

@@ -3,9 +3,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
+import { store } from "../../app/store";
 import CharactersPage from "./CharactersPage";
-import * as swapiApi from "../api/swapiApi";
+import * as swapiApi from "../../api/swapiApi";
 
 // Mock the RTK Query hook directly — keeps tests fast and deterministic
 const mockUseGetCharactersQuery = vi.spyOn(swapiApi, "useGetCharactersQuery");
