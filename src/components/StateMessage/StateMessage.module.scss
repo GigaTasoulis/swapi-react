@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/tokens" as *;
 
 .box {
@@ -16,9 +17,9 @@
   color: $color-text-muted;
 }
 .error {
-  background: lighten($color-danger, 38%);
-  color: darken($color-danger, 10%);
-  border-color: lighten($color-danger, 25%);
+  background: color.adjust($color-danger, $lightness: 38%);
+  color: color.adjust($color-danger, $lightness: -10%);
+  border-color: color.adjust($color-danger, $lightness: 25%);
 }
 
 .title {

@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/tokens" as *;
 
 .card {
@@ -15,7 +16,7 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow: $shadow-md;
-    border-color: darken($color-border, 8%);
+    border-color: color.adjust($color-border, $lightness: -8%);
   }
 }
 
