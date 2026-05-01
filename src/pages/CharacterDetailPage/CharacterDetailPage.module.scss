@@ -1,0 +1,19 @@
+@use "../../styles/tokens" as *;
+
+.header {
+  margin-bottom: $space-5;
+}
+
+.heading {
+  margin: 0;
+  font-size: $font-size-2xl;
+  font-weight: 700;
+}
+
+.details {
+  margin: 0;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: 0 $space-4;
+}

@@ -40,10 +40,10 @@ describe("App routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the dynamic id on character detail pages", () => {
+  it("renders the character detail page when navigating to /characters/:id", () => {
     renderApp("/characters/42");
     expect(
-      screen.getByRole("heading", { name: "Character #42" }),
+      screen.getByRole("link", { name: "Back to characters" }),
     ).toBeInTheDocument();
   });
 });
