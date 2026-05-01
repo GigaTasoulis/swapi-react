@@ -1,0 +1,16 @@
+@use "sass:color";
+@use "../../styles/tokens" as *;
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  color: $color-text-muted;
+  font-weight: 500;
+  font-size: $font-size-sm;
+  margin-bottom: $space-4;
+
+  &:hover {
+    color: $color-text;
+  }
+}

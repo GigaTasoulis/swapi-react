@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layout/Layout.tsx";
 import HomePage from "../pages/HomePage/HomePage.tsx";
 import CharactersPage from "../pages/CharactersPage/CharactersPage.tsx";
-import CharacterDetailPage from "../pages/CharacterDetailPage/CharacterDetailsPage.tsx";
+import CharacterDetailPage from "../pages/CharacterDetailPage/CharacterDetailPage.tsx";
 import FilmsPage from "../pages/FilmsPage/FilmsPage.tsx";
 import FilmDetailPage from "../pages/FilmDetailPage/FilmDetailPage.tsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.tsx";
