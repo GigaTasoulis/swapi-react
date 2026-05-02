@@ -5,14 +5,23 @@ import Card from "../../components/Card/Card";
 import Pagination from "../../components/Pagination/Pagination";
 import StateMessage from "../../components/StateMessage/StateMessage";
 import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import SearchInput from "../../components/SearchInput/SearchInput";
 import styles from "./CharactersPage.module.scss";
 
 export default function CharactersPage() {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search, 400);
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   const { data, isLoading, isError, isFetching } = useGetCharactersQuery({
     page,
-    search: "",
+    search: debouncedSearch,
   });
 
   return (
@@ -20,6 +29,13 @@ export default function CharactersPage() {
       <header className={styles.header}>
         <h1 className={styles.heading}>Characters</h1>
       </header>
+
+      <SearchInput
+        value={search}
+        onChange={handleSearchChange}
+        label="Search characters"
+        placeholder="Search by name…"
+      />
 
       {isLoading && (
         <StateMessage variant="loading" title="Loading characters…" />

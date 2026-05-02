@@ -3,16 +3,31 @@ import { getIdFromUrl } from "../../utils/getIdFromUrl";
 import Card from "../../components/Card/Card";
 import StateMessage from "../../components/StateMessage/StateMessage";
 import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
+import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import SearchInput from "../../components/SearchInput/SearchInput";
 import styles from "./FilmsPage.module.scss";
 
 export default function FilmsPage() {
-  const { data, isLoading, isError } = useGetFilmsQuery({ search: "" });
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search, 400);
+
+  const { data, isLoading, isError } = useGetFilmsQuery({
+    search: debouncedSearch,
+  });
 
   return (
     <section>
       <header className={styles.header}>
         <h1 className={styles.heading}>Films</h1>
       </header>
+
+      <SearchInput
+        value={search}
+        onChange={setSearch}
+        label="Search films"
+        placeholder="Search by title…"
+      />
 
       {isLoading && <StateMessage variant="loading" title="Loading films…" />}
 
