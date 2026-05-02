@@ -37,7 +37,16 @@
 .nav {
   display: flex;
   gap: $space-4;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  margin: 0 -#{$space-5};
+  padding: 0 $space-5;
 }
 
 .link {
