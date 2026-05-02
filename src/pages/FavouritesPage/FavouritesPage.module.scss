@@ -1,0 +1,43 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/breakpoints" as *;
+
+.header {
+  margin-bottom: $space-5;
+}
+
+.heading {
+  margin: 0;
+  font-size: $font-size-2xl;
+  font-weight: 700;
+}
+
+.section {
+  margin-bottom: $space-6;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  margin: 0 0 $space-3 0;
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: $color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

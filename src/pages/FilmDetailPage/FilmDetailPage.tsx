@@ -4,6 +4,7 @@ import { useGetFilmByIdQuery } from "../../api/swapiApi";
 import BackLink from "../../components/BackLink/BackLink";
 import DetailRow from "../../components/DetailRow/DetailRow";
 import StateMessage from "../../components/StateMessage/StateMessage";
+import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import styles from "./FilmDetailPage.module.scss";
 
 export default function FilmDetailPage() {
@@ -28,10 +29,19 @@ export default function FilmDetailPage() {
       {data && (
         <>
           <header className={styles.header}>
-            <p className={styles.episode}>Episode {data.episode_id}</p>
-            <h1 className={styles.heading}>{data.title}</h1>
+            <div>
+              <p className={styles.episode}>Episode {data.episode_id}</p>
+              <h1 className={styles.heading}>{data.title}</h1>
+            </div>
+            <FavouriteButton
+              item={{
+                id: id!,
+                type: "film",
+                title: data.title,
+                url: data.url,
+              }}
+            />
           </header>
-
           <section className={styles.crawl} aria-label="Opening crawl">
             {data.opening_crawl.split("\r\n\r\n").map((paragraph, index) => (
               <p key={index}>{paragraph.replace(/\r\n/g, " ")}</p>

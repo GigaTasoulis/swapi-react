@@ -31,3 +31,7 @@
   color: $color-text-muted;
   font-size: $font-size-sm;
 }
+
+.action {
+  flex-shrink: 0;
+}

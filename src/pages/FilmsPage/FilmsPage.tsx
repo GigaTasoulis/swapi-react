@@ -2,6 +2,7 @@ import { useGetFilmsQuery } from "../../api/swapiApi";
 import { getIdFromUrl } from "../../utils/getIdFromUrl";
 import Card from "../../components/Card/Card";
 import StateMessage from "../../components/StateMessage/StateMessage";
+import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import styles from "./FilmsPage.module.scss";
 
 export default function FilmsPage() {
@@ -37,6 +38,16 @@ export default function FilmsPage() {
                 to={`/films/${id}`}
                 title={film.title}
                 subtitle={`Directed by ${film.director} · ${film.release_date}`}
+                action={
+                  <FavouriteButton
+                    item={{
+                      id,
+                      type: "film",
+                      title: film.title,
+                      url: film.url,
+                    }}
+                  />
+                }
               />
             );
           })}

@@ -3,6 +3,10 @@
 @use "../../styles/breakpoints" as *;
 
 .header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-3;
   margin-bottom: $space-5;
 }
 

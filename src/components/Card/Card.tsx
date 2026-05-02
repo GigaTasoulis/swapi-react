@@ -5,13 +5,17 @@ type CardProps = {
   to: string;
   title: string;
   subtitle?: string;
+  action?: React.ReactNode;
 };
 
-export default function Card({ to, title, subtitle }: CardProps) {
+export default function Card({ to, title, subtitle, action }: CardProps) {
   return (
     <Link to={to} className={styles.card}>
-      <h3 className={styles.title}>{title}</h3>
-      {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+      <div className={styles.body}>
+        <h3 className={styles.title}>{title}</h3>
+        {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+      </div>
+      {action && <div className={styles.action}>{action}</div>}
     </Link>
   );
 }
