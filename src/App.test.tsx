@@ -19,13 +19,15 @@ function renderApp(initialPath = "/") {
 describe("App routing", () => {
   it("renders the home page on /", () => {
     renderApp("/");
-    expect(screen.getByRole("heading", { name: "Home" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Welcome" }),
+    ).toBeInTheDocument();
   });
 
   it("renders the 404 page for unknown routes", () => {
     renderApp("/something-random");
     expect(
-      screen.getByRole("heading", { name: "404 — Not Found" }),
+      screen.getByRole("heading", { name: "Lost in hyperspace" }),
     ).toBeInTheDocument();
   });
 
