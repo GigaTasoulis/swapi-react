@@ -34,7 +34,9 @@ describe("FilmsPage", () => {
     } as never);
 
     renderPage();
-    expect(screen.getByText("Loading films…")).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Loading films" }),
+    ).toBeInTheDocument();
   });
 
   it("shows error state when the request fails", () => {
@@ -132,5 +134,39 @@ describe("FilmsPage", () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     expect(mockUseGetFilmsQuery).toHaveBeenLastCalledWith({ search: "Hope" });
+  });
+
+  it("calls refetch when the retry button is clicked", async () => {
+    const user = userEvent.setup();
+    const refetch = vi.fn();
+    mockUseGetFilmsQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      isFetching: false,
+      refetch,
+    } as never);
+
+    renderPage();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(refetch).toHaveBeenCalled();
+  });
+
+  it("shows a search-specific empty message when results are empty after a search", async () => {
+    const user = userEvent.setup();
+    mockUseGetFilmsQuery.mockReturnValue({
+      data: { count: 0, next: null, previous: null, results: [] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+    await user.type(screen.getByLabelText("Search films"), "zzz");
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    expect(screen.getByText(/No films match "zzz"/)).toBeInTheDocument();
   });
 });

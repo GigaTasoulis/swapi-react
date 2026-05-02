@@ -10,7 +10,9 @@ import styles from "./FilmDetailPage.module.scss";
 export default function FilmDetailPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading, isError } = useGetFilmByIdQuery(id ?? skipToken);
+  const { data, isLoading, isError, refetch } = useGetFilmByIdQuery(
+    id ?? skipToken,
+  );
 
   return (
     <article>
@@ -23,6 +25,15 @@ export default function FilmDetailPage() {
           variant="error"
           title="Couldn't load this film"
           description="It may not exist, or the request failed."
+          action={
+            <button
+              type="button"
+              className={styles.retry}
+              onClick={() => refetch()}
+            >
+              Try again
+            </button>
+          }
         />
       )}
 

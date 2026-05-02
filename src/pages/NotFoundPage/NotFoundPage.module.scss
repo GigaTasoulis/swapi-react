@@ -1,0 +1,52 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/breakpoints" as *;
+
+.wrapper {
+  text-align: center;
+  padding: $space-6 $space-4;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.code {
+  margin: 0;
+  font-size: 4rem;
+  font-weight: 800;
+  color: $color-border;
+  letter-spacing: -0.05em;
+  line-height: 1;
+
+  @include md {
+    font-size: 6rem;
+  }
+}
+
+.heading {
+  margin: $space-3 0 $space-3 0;
+  font-size: $font-size-xl;
+  font-weight: 700;
+
+  @include md {
+    font-size: $font-size-2xl;
+  }
+}
+
+.message {
+  margin: 0 0 $space-5 0;
+  color: $color-text-muted;
+}
+
+.link {
+  display: inline-block;
+  padding: $space-2 $space-4;
+  background: $color-bg-subtle;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-weight: 500;
+  color: $color-text;
+  transition: background 120ms ease;
+
+  &:hover {
+    background: $color-border;
+  }
+}

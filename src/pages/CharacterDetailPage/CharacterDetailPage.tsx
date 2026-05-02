@@ -10,7 +10,7 @@ import styles from "./CharacterDetailPage.module.scss";
 export default function CharacterDetailPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading, isError } = useGetCharacterByIdQuery(
+  const { data, isLoading, isError, refetch } = useGetCharacterByIdQuery(
     id ?? skipToken,
   );
 
@@ -27,6 +27,15 @@ export default function CharacterDetailPage() {
           variant="error"
           title="Couldn't load this character"
           description="It may not exist, or the request failed."
+          action={
+            <button
+              type="button"
+              className={styles.retry}
+              onClick={() => refetch()}
+            >
+              Try again
+            </button>
+          }
         />
       )}
 

@@ -7,6 +7,7 @@ import StateMessage from "../../components/StateMessage/StateMessage";
 import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import CardSkeleton from "../../components/Skeleton/CardSkeleton";
 import styles from "./CharactersPage.module.scss";
 
 export default function CharactersPage() {
@@ -19,10 +20,11 @@ export default function CharactersPage() {
     setPage(1);
   };
 
-  const { data, isLoading, isError, isFetching } = useGetCharactersQuery({
-    page,
-    search: debouncedSearch,
-  });
+  const { data, isLoading, isError, isFetching, refetch } =
+    useGetCharactersQuery({
+      page,
+      search: debouncedSearch,
+    });
 
   return (
     <section>
@@ -38,7 +40,15 @@ export default function CharactersPage() {
       />
 
       {isLoading && (
-        <StateMessage variant="loading" title="Loading characters…" />
+        <div
+          className={styles.grid}
+          role="status"
+          aria-label="Loading characters"
+        >
+          {Array.from({ length: 9 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
       )}
 
       {isError && (
@@ -46,13 +56,33 @@ export default function CharactersPage() {
           variant="error"
           title="Couldn't load characters"
           description="Please try again in a moment."
+          action={
+            <button
+              type="button"
+              className={styles.retry}
+              onClick={() => refetch()}
+            >
+              Try again
+            </button>
+          }
         />
       )}
 
       {data && data.results.length === 0 && (
-        <StateMessage variant="empty" title="No characters found." />
+        <StateMessage
+          variant="empty"
+          title={
+            debouncedSearch
+              ? `No characters match "${debouncedSearch}"`
+              : "No characters found."
+          }
+          description={
+            debouncedSearch
+              ? "Try a different name or clear the search."
+              : undefined
+          }
+        />
       )}
-
       {data && data.results.length > 0 && (
         <>
           <div className={styles.grid} aria-busy={isFetching}>

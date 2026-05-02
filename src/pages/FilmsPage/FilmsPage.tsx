@@ -6,13 +6,14 @@ import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import { useState } from "react";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import CardSkeleton from "../../components/Skeleton/CardSkeleton";
 import styles from "./FilmsPage.module.scss";
 
 export default function FilmsPage() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedValue(search, 400);
 
-  const { data, isLoading, isError } = useGetFilmsQuery({
+  const { data, isLoading, isError, refetch } = useGetFilmsQuery({
     search: debouncedSearch,
   });
 
@@ -29,18 +30,45 @@ export default function FilmsPage() {
         placeholder="Search by title…"
       />
 
-      {isLoading && <StateMessage variant="loading" title="Loading films…" />}
+      {isLoading && (
+        <div className={styles.grid} role="status" aria-label="Loading films">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
       {isError && (
         <StateMessage
           variant="error"
           title="Couldn't load films"
           description="Please try again in a moment."
+          action={
+            <button
+              type="button"
+              className={styles.retry}
+              onClick={() => refetch()}
+            >
+              Try again
+            </button>
+          }
         />
       )}
 
       {data && data.results.length === 0 && (
-        <StateMessage variant="empty" title="No films found." />
+        <StateMessage
+          variant="empty"
+          title={
+            debouncedSearch
+              ? `No films match "${debouncedSearch}"`
+              : "No films found."
+          }
+          description={
+            debouncedSearch
+              ? "Try a different title or clear the search."
+              : undefined
+          }
+        />
       )}
 
       {data && data.results.length > 0 && (

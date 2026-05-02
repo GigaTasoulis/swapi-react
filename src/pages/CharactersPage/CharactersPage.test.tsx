@@ -35,7 +35,9 @@ describe("CharactersPage", () => {
     } as never);
 
     renderPage();
-    expect(screen.getByText("Loading characters…")).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Loading characters" }),
+    ).toBeInTheDocument();
   });
 
   it("shows error state when the request fails", () => {
@@ -177,5 +179,39 @@ describe("CharactersPage", () => {
       page: 1,
       search: "Luke",
     });
+  });
+
+  it("calls refetch when the retry button is clicked", async () => {
+    const user = userEvent.setup();
+    const refetch = vi.fn();
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      isFetching: false,
+      refetch,
+    } as never);
+
+    renderPage();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(refetch).toHaveBeenCalled();
+  });
+
+  it("shows a search-specific empty message when results are empty after a search", async () => {
+    const user = userEvent.setup();
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: { count: 0, next: null, previous: null, results: [] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+    await user.type(screen.getByLabelText("Search characters"), "xyzqq");
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    expect(screen.getByText(/No characters match "xyzqq"/)).toBeInTheDocument();
   });
 });

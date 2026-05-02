@@ -41,4 +41,17 @@ describe("StateMessage", () => {
     render(<StateMessage variant="empty" title="Nothing here" />);
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
+
+  it("renders the action node when provided", () => {
+    render(
+      <StateMessage
+        variant="error"
+        title="Boom"
+        action={<button>Try again</button>}
+      />,
+    );
+    expect(
+      screen.getByRole("button", { name: "Try again" }),
+    ).toBeInTheDocument();
+  });
 });
