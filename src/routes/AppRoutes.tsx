@@ -6,7 +6,7 @@ import CharacterDetailPage from "../pages/CharacterDetailPage/CharacterDetailPag
 import FilmsPage from "../pages/FilmsPage/FilmsPage.tsx";
 import FilmDetailPage from "../pages/FilmDetailPage/FilmDetailPage.tsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.tsx";
-import FavoritesPage from "../pages/FavouritesPage/FavoritesPage.tsx";
+import FavouritesPage from "../pages/FavouritesPage/FavouritesPage.tsx";
 
 export default function AppRoutes() {
   return (
@@ -17,7 +17,7 @@ export default function AppRoutes() {
         <Route path="characters/:id" element={<CharacterDetailPage />} />
         <Route path="films" element={<FilmsPage />} />
         <Route path="films/:id" element={<FilmDetailPage />} />
-        <Route path="favorites" element={<FavoritesPage />} />
+        <Route path="favourites" element={<FavouritesPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
