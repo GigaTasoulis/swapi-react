@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "../../app/store";
 import FilmsPage from "./FilmsPage";
 import * as swapiApi from "../../api/swapiApi";
+import userEvent from "@testing-library/user-event";
 
 const mockUseGetFilmsQuery = vi.spyOn(swapiApi, "useGetFilmsQuery");
 
@@ -114,5 +115,22 @@ describe("FilmsPage", () => {
     expect(
       screen.queryByRole("navigation", { name: "Pagination" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("passes the search input value through (debounced) to the query", async () => {
+    const user = userEvent.setup();
+    mockUseGetFilmsQuery.mockReturnValue({
+      data: { count: 0, next: null, previous: null, results: [] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+    await user.type(screen.getByLabelText("Search films"), "Hope");
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    expect(mockUseGetFilmsQuery).toHaveBeenLastCalledWith({ search: "Hope" });
   });
 });

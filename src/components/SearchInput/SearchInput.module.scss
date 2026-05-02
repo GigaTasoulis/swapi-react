@@ -1,0 +1,76 @@
+@use "sass:color";
+@use "../../styles/tokens" as *;
+
+.wrapper {
+  margin-bottom: $space-5;
+}
+
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-4;
+  padding-right: $space-8; // room for the clear button
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  font-family: inherit;
+  color: $color-text;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+
+  &::placeholder {
+    color: $color-text-muted;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px color.adjust($color-primary, $alpha: -0.7);
+  }
+
+  // Hide the browser's built-in search clear icon (we have our own)
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+.clear {
+  position: absolute;
+  top: 50%;
+  right: $space-2;
+  transform: translateY(-50%);
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: $color-text-muted;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-text;
+  }
+}

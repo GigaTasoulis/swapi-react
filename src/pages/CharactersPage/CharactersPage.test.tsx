@@ -119,4 +119,63 @@ describe("CharactersPage", () => {
       search: "",
     });
   });
+
+  it("passes the search input value through (debounced) to the query", async () => {
+    const user = userEvent.setup();
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: { count: 0, next: null, previous: null, results: [] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+    await user.type(screen.getByLabelText("Search characters"), "Luke");
+
+    // Wait for the debounce delay to flush, then assert
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // The hook should have been called with the typed search value
+    expect(mockUseGetCharactersQuery).toHaveBeenLastCalledWith({
+      page: 1,
+      search: "Luke",
+    });
+  });
+
+  it("resets to page 1 when the search value changes", async () => {
+    const user = userEvent.setup();
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: {
+        count: 100,
+        next: "https://swapi.py4e.com/api/people/?page=2",
+        previous: null,
+        results: [
+          {
+            name: "Luke",
+            birth_year: "19BBY",
+            url: "https://swapi.py4e.com/api/people/1/",
+          },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+
+    // Move to page 2
+    await user.click(screen.getByRole("button", { name: /Next/ }));
+
+    // Type into the search box — should reset to page 1
+    await user.type(screen.getByLabelText("Search characters"), "Luke");
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    expect(mockUseGetCharactersQuery).toHaveBeenLastCalledWith({
+      page: 1,
+      search: "Luke",
+    });
+  });
 });
