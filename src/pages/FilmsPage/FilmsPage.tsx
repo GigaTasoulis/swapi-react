@@ -6,6 +6,7 @@ import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import { useState } from "react";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import CardSkeleton from "../../components/Skeleton/CardSkeleton";
 import styles from "./FilmsPage.module.scss";
 
 export default function FilmsPage() {
@@ -29,7 +30,13 @@ export default function FilmsPage() {
         placeholder="Search by title…"
       />
 
-      {isLoading && <StateMessage variant="loading" title="Loading films…" />}
+      {isLoading && (
+        <div className={styles.grid} role="status" aria-label="Loading films">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      )}
 
       {isError && (
         <StateMessage

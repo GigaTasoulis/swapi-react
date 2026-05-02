@@ -34,7 +34,9 @@ describe("FilmsPage", () => {
     } as never);
 
     renderPage();
-    expect(screen.getByText("Loading films…")).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Loading films" }),
+    ).toBeInTheDocument();
   });
 
   it("shows error state when the request fails", () => {

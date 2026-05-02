@@ -35,7 +35,9 @@ describe("CharactersPage", () => {
     } as never);
 
     renderPage();
-    expect(screen.getByText("Loading characters…")).toBeInTheDocument();
+    expect(
+      screen.getByRole("status", { name: "Loading characters" }),
+    ).toBeInTheDocument();
   });
 
   it("shows error state when the request fails", () => {

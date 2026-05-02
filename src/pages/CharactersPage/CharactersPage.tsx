@@ -7,6 +7,7 @@ import StateMessage from "../../components/StateMessage/StateMessage";
 import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import CardSkeleton from "../../components/Skeleton/CardSkeleton";
 import styles from "./CharactersPage.module.scss";
 
 export default function CharactersPage() {
@@ -38,7 +39,15 @@ export default function CharactersPage() {
       />
 
       {isLoading && (
-        <StateMessage variant="loading" title="Loading characters…" />
+        <div
+          className={styles.grid}
+          role="status"
+          aria-label="Loading characters"
+        >
+          {Array.from({ length: 9 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
       )}
 
       {isError && (
