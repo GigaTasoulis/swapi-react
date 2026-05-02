@@ -4,6 +4,7 @@ import { useGetCharacterByIdQuery } from "../../api/swapiApi";
 import BackLink from "../../components/BackLink/BackLink";
 import DetailRow from "../../components/DetailRow/DetailRow";
 import StateMessage from "../../components/StateMessage/StateMessage";
+import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import styles from "./CharacterDetailPage.module.scss";
 
 export default function CharacterDetailPage() {
@@ -33,6 +34,14 @@ export default function CharacterDetailPage() {
         <>
           <header className={styles.header}>
             <h1 className={styles.heading}>{data.name}</h1>
+            <FavouriteButton
+              item={{
+                id: id!,
+                type: "character",
+                title: data.name,
+                url: data.url,
+              }}
+            />
           </header>
 
           <dl className={styles.details}>

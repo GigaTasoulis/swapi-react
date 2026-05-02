@@ -34,4 +34,13 @@ describe("Card", () => {
     const link = screen.getByRole("link", { name: /Luke/ });
     expect(link).toHaveAttribute("href", "/characters/1");
   });
+
+  it("renders the action when provided", () => {
+    render(
+      <MemoryRouter>
+        <Card to="/characters/1" title="Luke" action={<button>Star</button>} />
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole("button", { name: "Star" })).toBeInTheDocument();
+  });
 });

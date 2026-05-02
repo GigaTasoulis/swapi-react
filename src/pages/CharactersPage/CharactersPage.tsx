@@ -4,6 +4,7 @@ import { getIdFromUrl } from "../../utils/getIdFromUrl";
 import Card from "../../components/Card/Card";
 import Pagination from "../../components/Pagination/Pagination";
 import StateMessage from "../../components/StateMessage/StateMessage";
+import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
 import styles from "./CharactersPage.module.scss";
 
 export default function CharactersPage() {
@@ -47,6 +48,16 @@ export default function CharactersPage() {
                   to={`/characters/${id}`}
                   title={character.name}
                   subtitle={`Born ${character.birth_year}`}
+                  action={
+                    <FavouriteButton
+                      item={{
+                        id,
+                        type: "character",
+                        title: character.name,
+                        url: character.url,
+                      }}
+                    />
+                  }
                 />
               );
             })}
