@@ -1,29 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useGetCharactersQuery } from "../../api/swapiApi";
+import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { getIdFromUrl } from "../../utils/getIdFromUrl";
 import Card from "../../components/Card/Card";
-import Pagination from "../../components/Pagination/Pagination";
-import StateMessage from "../../components/StateMessage/StateMessage";
-import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
-import { useDebouncedValue } from "../../hooks/useDebouncedValue";
-import SearchInput from "../../components/SearchInput/SearchInput";
 import CardSkeleton from "../../components/Skeleton/CardSkeleton";
+import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
+import Pagination from "../../components/Pagination/Pagination";
+import SearchInput from "../../components/SearchInput/SearchInput";
+import StateMessage from "../../components/StateMessage/StateMessage";
 import styles from "./CharactersPage.module.scss";
 
 export default function CharactersPage() {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const urlSearch = searchParams.get("search") ?? "";
+  const urlPage = Number(searchParams.get("page")) || 1;
+
+  const [search, setSearch] = useState(urlSearch);
   const debouncedSearch = useDebouncedValue(search, 400);
 
-  const handleSearchChange = (value: string) => {
-    setSearch(value);
-    setPage(1);
+  useEffect(() => {
+    if (debouncedSearch === urlSearch) return;
+
+    const next = new URLSearchParams(searchParams);
+    if (debouncedSearch) {
+      next.set("search", debouncedSearch);
+    } else {
+      next.delete("search");
+    }
+    next.delete("page"); // reset page on search change
+    setSearchParams(next, { replace: true });
+  }, [debouncedSearch, urlSearch, searchParams, setSearchParams]);
+
+  const handlePageChange = (nextPage: number) => {
+    const next = new URLSearchParams(searchParams);
+    if (nextPage === 1) {
+      next.delete("page"); // keep URL clean when on page 1
+    } else {
+      next.set("page", String(nextPage));
+    }
+    setSearchParams(next);
   };
 
   const { data, isLoading, isError, isFetching, refetch } =
     useGetCharactersQuery({
-      page,
-      search: debouncedSearch,
+      page: urlPage,
+      search: urlSearch,
     });
 
   return (
@@ -34,7 +57,7 @@ export default function CharactersPage() {
 
       <SearchInput
         value={search}
-        onChange={handleSearchChange}
+        onChange={setSearch}
         label="Search characters"
         placeholder="Search by name…"
       />
@@ -72,14 +95,12 @@ export default function CharactersPage() {
         <StateMessage
           variant="empty"
           title={
-            debouncedSearch
-              ? `No characters match "${debouncedSearch}"`
+            urlSearch
+              ? `No characters match "${urlSearch}"`
               : "No characters found."
           }
           description={
-            debouncedSearch
-              ? "Try a different name or clear the search."
-              : undefined
+            urlSearch ? "Try a different name or clear the search." : undefined
           }
         />
       )}
@@ -110,10 +131,10 @@ export default function CharactersPage() {
           </div>
 
           <Pagination
-            page={page}
+            page={urlPage}
             hasPrevious={Boolean(data.previous)}
             hasNext={Boolean(data.next)}
-            onPageChange={setPage}
+            onPageChange={handlePageChange}
           />
         </>
       )}

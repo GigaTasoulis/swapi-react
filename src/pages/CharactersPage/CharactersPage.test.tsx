@@ -7,13 +7,12 @@ import { store } from "../../app/store";
 import CharactersPage from "./CharactersPage";
 import * as swapiApi from "../../api/swapiApi";
 
-// Mock the RTK Query hook directly — keeps tests fast and deterministic
 const mockUseGetCharactersQuery = vi.spyOn(swapiApi, "useGetCharactersQuery");
 
-function renderPage() {
+function renderPage(initialUrl = "/characters") {
   return render(
     <Provider store={store}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[initialUrl]}>
         <CharactersPage />
       </MemoryRouter>
     </Provider>,
@@ -76,7 +75,7 @@ describe("CharactersPage", () => {
           {
             name: "Luke Skywalker",
             birth_year: "19BBY",
-            url: "https://swapi.dev/api/people/1/",
+            url: "https://swapi.py4e.com/api/people/1/",
           },
         ],
       },
@@ -91,33 +90,38 @@ describe("CharactersPage", () => {
     expect(screen.getByText("Born 19BBY")).toBeInTheDocument();
   });
 
-  it("advances the page when Next is clicked", async () => {
-    const user = userEvent.setup();
+  it("reads page and search from the URL on initial render", () => {
     mockUseGetCharactersQuery.mockReturnValue({
-      data: {
-        count: 20,
-        next: "https://swapi.dev/api/people/?page=2",
-        previous: null,
-        results: [
-          {
-            name: "Luke",
-            birth_year: "19BBY",
-            url: "https://swapi.dev/api/people/1/",
-          },
-        ],
-      },
+      data: { count: 0, next: null, previous: null, results: [] },
       isLoading: false,
       isError: false,
       isFetching: false,
       refetch: vi.fn(),
     } as never);
 
-    renderPage();
-    await user.click(screen.getByRole("button", { name: /Next/ }));
+    renderPage("/characters?page=3&search=Luke");
 
-    // After click, the hook should be called again with page: 2
-    expect(mockUseGetCharactersQuery).toHaveBeenLastCalledWith({
-      page: 2,
+    // The query should be called with values parsed from the URL
+    expect(mockUseGetCharactersQuery).toHaveBeenCalledWith({
+      page: 3,
+      search: "Luke",
+    });
+    // And the input should be pre-filled
+    expect(screen.getByLabelText("Search characters")).toHaveValue("Luke");
+  });
+
+  it("falls back to page 1 when the page param is missing or invalid", () => {
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: { count: 0, next: null, previous: null, results: [] },
+      isLoading: false,
+      isError: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage("/characters?page=invalid");
+    expect(mockUseGetCharactersQuery).toHaveBeenCalledWith({
+      page: 1,
       search: "",
     });
   });
@@ -135,10 +139,8 @@ describe("CharactersPage", () => {
     renderPage();
     await user.type(screen.getByLabelText("Search characters"), "Luke");
 
-    // Wait for the debounce delay to flush, then assert
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // The hook should have been called with the typed search value
     expect(mockUseGetCharactersQuery).toHaveBeenLastCalledWith({
       page: 1,
       search: "Luke",
@@ -166,12 +168,9 @@ describe("CharactersPage", () => {
       refetch: vi.fn(),
     } as never);
 
-    renderPage();
+    // Start on page 2 to prove the reset
+    renderPage("/characters?page=2");
 
-    // Move to page 2
-    await user.click(screen.getByRole("button", { name: /Next/ }));
-
-    // Type into the search box — should reset to page 1
     await user.type(screen.getByLabelText("Search characters"), "Luke");
     await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -179,23 +178,6 @@ describe("CharactersPage", () => {
       page: 1,
       search: "Luke",
     });
-  });
-
-  it("calls refetch when the retry button is clicked", async () => {
-    const user = userEvent.setup();
-    const refetch = vi.fn();
-    mockUseGetCharactersQuery.mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      isError: true,
-      isFetching: false,
-      refetch,
-    } as never);
-
-    renderPage();
-    await user.click(screen.getByRole("button", { name: "Try again" }));
-
-    expect(refetch).toHaveBeenCalled();
   });
 
   it("shows a search-specific empty message when results are empty after a search", async () => {
@@ -213,5 +195,22 @@ describe("CharactersPage", () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     expect(screen.getByText(/No characters match "xyzqq"/)).toBeInTheDocument();
+  });
+
+  it("calls refetch when the retry button is clicked", async () => {
+    const user = userEvent.setup();
+    const refetch = vi.fn();
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      isFetching: false,
+      refetch,
+    } as never);
+
+    renderPage();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(refetch).toHaveBeenCalled();
   });
 });
