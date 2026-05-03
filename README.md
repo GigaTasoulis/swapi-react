@@ -198,11 +198,3 @@ Some specific decisions worth calling out:
 - **Favourites store the data we have at favouriting time** (id, type, title, url) so the favourites page renders without re-fetching every item. The trade-off: if SWAPI ever updated a title, the favourites page would show the cached version until the user re-favourites.
 
 ---
-
-## What I'd Add Next
-
-Given more time, the things I'd reach for first:
-
-- Add a `prefers-color-scheme` dark mode (the design token system is ready for it — only colour tokens would change).
-- Lazy-load detail pages with `React.lazy` + `Suspense` for a smaller initial bundle.
-- Add Playwright tests for one or two end-to-end flows (favourite a character → reload → still there) to prove production-style integration.
