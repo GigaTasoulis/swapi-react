@@ -27,7 +27,7 @@
 
   &:hover:not(:disabled) {
     background: $color-bg-subtle;
-    border-color: color.adjust($color-border, $lightness: -8%);
+    border-color: $color-border-strong;
   }
 
   &:disabled {

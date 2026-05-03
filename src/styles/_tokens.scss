@@ -1,17 +1,114 @@
-// Design tokens — single source of truth for visual values
+// Design tokens — single source of truth for visual values.
 
-// Colors
-$color-bg: #ffffff;
-$color-bg-subtle: #f7f7f8;
-$color-border: #e5e5e7;
-$color-text: #1a1a1a;
-$color-text-muted: #6b6b70;
-$color-primary: #ffe81f; // Star Wars yellow
-$color-primary-hover: #f5c500;
-$color-danger: #d33b3b;
-$color-focus: #4a90e2;
+// 1. Defaults (light theme)
+:root {
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f7f7f8;
+  --color-border: #e5e5e7;
+  --color-border-strong: #d4d4d8;
+  --color-border-soft: #ecebf0;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b70;
+  --color-primary: #ffe81f;
+  --color-primary-hover: #f5c500;
+  --color-primary-soft: rgba(255, 232, 31, 0.3);
+  --color-primary-tint: rgba(255, 232, 31, 0.15);
+  --color-danger: #d33b3b;
+  --color-focus: #4a90e2;
+  --color-error-bg: #faecec;
+  --color-error-text: #a82323;
+  --color-error-border: #efc4c4;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
-// Spacing scale (4px base)
+// 2. OS-based dark (lower priority than manual override below)
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0e0f12;
+    --color-bg-subtle: #17181c;
+    --color-border: #2a2b30;
+    --color-border-strong: #3a3b40;
+    --color-border-soft: #1f2024;
+    --color-text: #e8e8ea;
+    --color-text-muted: #9a9aa0;
+    --color-primary: #ffe81f;
+    --color-primary-hover: #f5c500;
+    --color-primary-soft: rgba(255, 232, 31, 0.4);
+    --color-primary-tint: rgba(255, 232, 31, 0.12);
+    --color-danger: #d33b3b;
+    --color-focus: #5a9def;
+    --color-error-bg: #3a1d1d;
+    --color-error-text: #f5b5b5;
+    --color-error-border: #5a2929;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+}
+
+// 3. Manual overrides — must come AFTER @media to win on equal specificity.
+// These are TOP-LEVEL selectors (not nested inside :root) so they target
+// the html element itself, not a descendant of it.
+[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f7f7f8;
+  --color-border: #e5e5e7;
+  --color-border-strong: #d4d4d8;
+  --color-border-soft: #ecebf0;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b70;
+  --color-primary: #ffe81f;
+  --color-primary-hover: #f5c500;
+  --color-primary-soft: rgba(255, 232, 31, 0.3);
+  --color-primary-tint: rgba(255, 232, 31, 0.15);
+  --color-danger: #d33b3b;
+  --color-focus: #4a90e2;
+  --color-error-bg: #faecec;
+  --color-error-text: #a82323;
+  --color-error-border: #efc4c4;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --color-bg: #0e0f12;
+  --color-bg-subtle: #17181c;
+  --color-border: #2a2b30;
+  --color-border-strong: #3a3b40;
+  --color-border-soft: #1f2024;
+  --color-text: #e8e8ea;
+  --color-text-muted: #9a9aa0;
+  --color-primary: #ffe81f;
+  --color-primary-hover: #f5c500;
+  --color-primary-soft: rgba(255, 232, 31, 0.4);
+  --color-primary-tint: rgba(255, 232, 31, 0.12);
+  --color-danger: #d33b3b;
+  --color-focus: #5a9def;
+  --color-error-bg: #3a1d1d;
+  --color-error-text: #f5b5b5;
+  --color-error-border: #5a2929;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+// Colour tokens (alias CSS vars so existing $color-* references keep working)
+$color-bg: var(--color-bg);
+$color-bg-subtle: var(--color-bg-subtle);
+$color-border: var(--color-border);
+$color-border-strong: var(--color-border-strong);
+$color-border-soft: var(--color-border-soft);
+$color-text: var(--color-text);
+$color-text-muted: var(--color-text-muted);
+$color-primary: var(--color-primary);
+$color-primary-hover: var(--color-primary-hover);
+$color-primary-soft: var(--color-primary-soft);
+$color-primary-tint: var(--color-primary-tint);
+$color-danger: var(--color-danger);
+$color-focus: var(--color-focus);
+$shadow-sm: var(--shadow-sm);
+$shadow-md: var(--shadow-md);
+
+// Spacing scale (4px base) — build-time only, never changes per theme
 $space-1: 0.25rem; // 4px
 $space-2: 0.5rem; // 8px
 $space-3: 0.75rem; // 12px
@@ -20,7 +117,7 @@ $space-5: 1.5rem; // 24px
 $space-6: 2rem; // 32px
 $space-8: 3rem; // 48px
 
-// Typography
+// Typography — build-time only
 $font-family-base:
   system-ui,
   -apple-system,
@@ -33,14 +130,10 @@ $font-size-lg: 1.125rem;
 $font-size-xl: 1.5rem;
 $font-size-2xl: 2rem;
 
-// Borders & radii
+// Borders & radii — build-time only
 $radius-sm: 4px;
 $radius-md: 8px;
 $radius-lg: 12px;
 
-// Shadows
-$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
-$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-// Layout
+// Layout — build-time only
 $max-width: 1100px;

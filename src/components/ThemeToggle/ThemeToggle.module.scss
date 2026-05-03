@@ -1,0 +1,42 @@
+@use "../../styles/tokens" as *;
+
+.group {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: $color-bg-subtle;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.75rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: calc(#{$radius-md} - 2px);
+  font-size: 0.875rem;
+  line-height: 1;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+
+  &:hover:not([aria-checked="true"]) {
+    background: $color-border;
+    color: $color-text;
+  }
+}
+
+.active {
+  background: $color-bg;
+  color: $color-text;
+  box-shadow: $shadow-sm;
+}
