@@ -213,4 +213,30 @@ describe("CharactersPage", () => {
 
     expect(refetch).toHaveBeenCalled();
   });
+
+  it("disables pagination buttons while fetching", () => {
+    mockUseGetCharactersQuery.mockReturnValue({
+      data: {
+        count: 100,
+        next: "https://swapi.py4e.com/api/people/?page=2",
+        previous: null,
+        results: [
+          {
+            name: "Luke",
+            birth_year: "19BBY",
+            url: "https://swapi.py4e.com/api/people/1/",
+          },
+        ],
+      },
+      isLoading: false,
+      isError: false,
+      isFetching: true,
+      refetch: vi.fn(),
+    } as never);
+
+    renderPage();
+
+    expect(screen.getByRole("button", { name: /Next/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Previous/ })).toBeDisabled();
+  });
 });

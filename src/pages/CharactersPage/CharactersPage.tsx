@@ -132,8 +132,8 @@ export default function CharactersPage() {
 
           <Pagination
             page={urlPage}
-            hasPrevious={Boolean(data.previous)}
-            hasNext={Boolean(data.next)}
+            hasPrevious={Boolean(data.previous) && !isFetching}
+            hasNext={Boolean(data.next) && !isFetching}
             onPageChange={handlePageChange}
           />
         </>
