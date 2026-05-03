@@ -203,7 +203,6 @@ Some specific decisions worth calling out:
 
 Given more time, the things I'd reach for first:
 
-- Replace the local `useState` for search and page with `useSearchParams` so the URL is shareable and the back button works through the search history.
 - Add a `prefers-color-scheme` dark mode (the design token system is ready for it — only colour tokens would change).
 - Lazy-load detail pages with `React.lazy` + `Suspense` for a smaller initial bundle.
 - Add Playwright tests for one or two end-to-end flows (favourite a character → reload → still there) to prove production-style integration.
