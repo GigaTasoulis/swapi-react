@@ -169,4 +169,21 @@ describe("FilmsPage", () => {
 
     expect(screen.getByText(/No films match "zzz"/)).toBeInTheDocument();
   });
+
+  it("calls refetch when the retry button is clicked", async () => {
+    const user = userEvent.setup();
+    const refetch = vi.fn();
+    mockUseGetFilmsQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      isFetching: false,
+      refetch,
+    } as never);
+
+    renderPage();
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(refetch).toHaveBeenCalled();
+  });
 });

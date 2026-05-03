@@ -3,18 +3,34 @@ import { getIdFromUrl } from "../../utils/getIdFromUrl";
 import Card from "../../components/Card/Card";
 import StateMessage from "../../components/StateMessage/StateMessage";
 import FavouriteButton from "../../components/FavouriteButton/FavouriteButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import CardSkeleton from "../../components/Skeleton/CardSkeleton";
 import styles from "./FilmsPage.module.scss";
+import { useSearchParams } from "react-router-dom";
 
 export default function FilmsPage() {
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search") ?? "";
+
+  const [search, setSearch] = useState(urlSearch);
   const debouncedSearch = useDebouncedValue(search, 400);
 
+  useEffect(() => {
+    if (debouncedSearch === urlSearch) return;
+
+    const next = new URLSearchParams(searchParams);
+    if (debouncedSearch) {
+      next.set("search", debouncedSearch);
+    } else {
+      next.delete("search");
+    }
+    setSearchParams(next, { replace: true });
+  }, [debouncedSearch, urlSearch, searchParams, setSearchParams]);
+
   const { data, isLoading, isError, refetch } = useGetFilmsQuery({
-    search: debouncedSearch,
+    search: urlSearch,
   });
 
   return (
