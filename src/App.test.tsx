@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { Suspense } from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
@@ -10,7 +11,9 @@ function renderApp(initialPath = "/") {
   return render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[initialPath]}>
-        <AppRoutes />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AppRoutes />
+        </Suspense>
       </MemoryRouter>
     </Provider>,
   );
@@ -24,11 +27,13 @@ describe("App routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the 404 page for unknown routes", () => {
+  it("renders the 404 page for unknown routes", async () => {
     renderApp("/something-random");
-    expect(
-      screen.getByRole("heading", { name: "Lost in hyperspace" }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("heading", { name: "Lost in hyperspace" }),
+      ).toBeInTheDocument();
+    });
   });
 
   it("navigates to characters when the Characters link is clicked", async () => {
@@ -42,10 +47,12 @@ describe("App routing", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the character detail page when navigating to /characters/:id", () => {
+  it("renders the character detail page when navigating to /characters/:id", async () => {
     renderApp("/characters/42");
-    expect(
-      screen.getByRole("link", { name: "Back to characters" }),
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.getByRole("link", { name: "Back to characters" }),
+      ).toBeInTheDocument();
+    });
   });
 });
