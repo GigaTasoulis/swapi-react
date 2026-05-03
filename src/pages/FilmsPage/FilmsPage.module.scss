@@ -1,6 +1,5 @@
 @use "../../styles/tokens" as *;
 @use "../../styles/breakpoints" as *;
-@use "sass:color";
 
 .header {
   margin-bottom: $space-5;
@@ -39,6 +38,6 @@
 
   &:hover {
     background: $color-bg-subtle;
-    border-color: color.adjust($color-border, $lightness: -8%);
+    border-color: $color-border-strong;
   }
 }
