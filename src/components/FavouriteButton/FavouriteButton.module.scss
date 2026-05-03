@@ -35,6 +35,15 @@
   border-color: $color-primary;
   color: $color-text;
 
+  @media (prefers-color-scheme: dark) {
+    color: #000000;
+  }
+
+  // Also handle manual dark theme override
+  :global([data-theme="dark"]) & {
+    color: #000000;
+  }
+
   &:hover {
     background: $color-primary-hover;
     border-color: $color-primary-hover;
