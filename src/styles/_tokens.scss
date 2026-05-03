@@ -24,6 +24,32 @@
   // Shadows (the rgba values are theme-aware in dark mode)
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0e0f12;
+      --color-bg-subtle: #17181c;
+      --color-border: #2a2b30;
+      --color-border-strong: #3a3b40;
+      --color-border-soft: #1f2024;
+      --color-text: #e8e8ea;
+      --color-text-muted: #9a9aa0;
+
+      --color-primary: #ffe81f;
+      --color-primary-hover: #f5c500;
+      --color-primary-soft: rgba(255, 232, 31, 0.4);
+      --color-primary-tint: rgba(255, 232, 31, 0.12);
+      --color-danger: #d33b3b;
+      --color-focus: #5a9def;
+
+      --color-error-bg: #3a1d1d;
+      --color-error-text: #f5b5b5;
+      --color-error-border: #5a2929;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+  }
 }
 
 // Colour tokens (alias CSS vars so existing $color-* references keep working)
