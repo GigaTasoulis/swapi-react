@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
 import { useTheme } from "./useTheme";
-import type { Theme } from "./useTheme";
 
 const STORAGE_KEY = "swapi-theme";
 
